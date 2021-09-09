@@ -1,0 +1,149 @@
+---
+bibliography: references.bib
+---
+
+# Methods {.unnumbered}
+
+## Participants {.unnumbered}
+
+G\*Power [@erdfelder1996] was used to perform an *a priori* power analysis for an independent groups comparison of the primary outcome variable used in previous studies (*accuracy gain*) between participants asked to follow dialectical instructions for their second estimates and those asked to make second estimates as if they had just started the study. Based on previous studies finding effect sizes for accuracy gain ranging between *d*=.24-.66 [@herzog2009; @herzog2014], a medium effect size (*d*=.40) representative of a greater level of accuracy gain for participants in the dialectical bootstrapping condition was assumed. Using this effect size estimate, two-tailed $\alpha$=.05 and an allocation ratio of 1:1 between conditions, G\*Power reported that a sample size of 200 valid responses (*n*~1~=100; n~2~=100) was required to achieve power of .8.
+
+In line with this, an initial sample of `r nrow(data_raw)` participants over the age of 18 was recruited online (*N*=`r nrow(data_s)`) and from a participant pool of students from the University of Bath (*N*=`r nrow(data_p)`) to preempt incomplete and rejected submissions.
+
+Participants were excluded based on the criteria outlined in the pre-registration report for this paper [@goclowska2021], a copy of which is also available in Appendix \@ref(prereg)]. This criteria were as follows:
+
+-   if they did not complete the study on a computer with a keyboard (*n*=`r length(which(data_raw$Consent_8==2))`);
+
+-   if they were not a British resident (*n*=`r length(which(data_raw$Consent_6==2))`) or did not identify as British (*n*=`r length(which(data_raw$Nationality==0))`);
+
+-   if they failed to complete the study (*n*=`r length(which(data_raw$Progress<100))`);
+
+-   if they failed two or more of three attention checks (*n*=`r length(which(data_raw$AChecks>=2))`);
+
+-   if their study duration was extremely short or long (*z-*score \< -3, *n*=`r length(which(data_raw$ScaledDuration< -3))`; or *z*-score \> 3, *n*=`r length(which(data_raw$ScaledDuration>3))`);
+
+-   if they reported not having made second estimates in response to a manipulation check[^m1] (*n*=`r length(which(data_raw$Manipulation.Check==0))`).
+
+[^m1]: Participants were told they may have been asked to make a second round of estimates, and were asked to characterise whether they had been told to make these estimates with the instructions "as if my first estimates and the assumptions behind them had been off the mark" (*dialectical)* or "as if I had just started the study and were making the estimates for the first time" (*repeated*). A third option, "I was not asked to make second estimates", was also included as an additional attention check.
+
+    Generally, participants answered this question correctly; only `r length(which(data_DB$Manipulation.Check!=1))` participants in the *dialectical bootstrapping* condition and `r length(which(data_RE$Manipulation.Check!=2))` participants in the *repeated estimates* condition reported the incorrect information. Given this number was small, and in order to avoid unintended effects of dropping participants unnecessarily [@hauser2018; @aronow2019], only the participants who made a serious error (reporting not having given second estimates at all) were excluded from analyses.
+
+Following exclusions, the final sample contained `r nrow(data)` participants with a mean age of `r round(mean(data$Age, na.rm=TRUE),2)` (*SD*=`r round(sd(data$Age, na.rm=TRUE),2)`). `r length(data$Gender[data$Gender=="Female" | data$Gender=="Female " | data$Gender=="female" | data$Gender=="female " | data$Gender=="FEMALE" | data$Gender=="FEMALE " | data$Gender=="F"])` of the participants were female, `r length(data$Gender[data$Gender=="Male" | data$Gender=="Male " | data$Gender=="male" | data$Gender=="male " | data$Gender=="MALE" | data$Gender=="MALE " | data$Gender=="M"])` were male, `r length(data$Gender[data$Gender=="nonbinary "])` were nonbinary and 2 preferred not to say; `r length(which(data$Source==1))` participants came from the student sample.
+
+Participants were given compensation of £2.50 (Prolific) or course credits (students) for participation. In addition, and similarly to previous studies [e.g. @herzog2009], participants were informed that their accuracy in the estimation task would increase their odds of winning a £50 gift voucher. To reduce the impact of potential effects of incentives masking the differences between the instructions given during second estimates between conditions, the information on *how* increased accuracy would affect their odds of winning the gift voucher was deliberately vague; participants in both conditions were simply told that the more accurate their estimates were, the higher the chance that they would win the £50 gift voucher, and they were reminded of this before engaging in their second estimates.
+
+## Materials {.unnumbered}
+
+### Attitudes Measures {.unnumbered}
+
+In order to measure whether the *dialectical bootstrapping* process impacts open-mindedness in relation to attitudes relating to sustainability, participants were asked about their attitudes towards household recycling and the pro-climate movement Extinction Rebellion. These two attitude objects were chosen to represent a more typical everyday sustainability behaviour that people generally support (*household recycling*), as well as a broader, more controversial sociopolitical issue (*Extinction Rebellion*). In order to elaborate on what was meant by each attitude object, as well as encourage participants to think about the behavioural components of their attitudes towards each when thinking about attitude ambivalence and strength, participants were also given some information on *household recycling* ("by household recycling, we mean when individuals recycle waste rather than commercial or industrial recycling. When thinking about household recycling, think about the potential impacts of recycling as well as the act of recycling itself") and *Extinction Rebellion* ("Extinction Rebellion (XR) is a global environmentalist movement which aims to use civil disobedience to compel government action. When thinking about XR, think about the thoughts and aims of the group as well as their actions and protests"). Attitudes were measured both before and after the main estimation task[^m2].
+
+[^m2]: For the purposes of the attitudes measures, *time 1* refers to the measurement taken before the estimation task, whilst *time 2* is the repeated measurement after the estimation task.
+
+##### Content {.unnumbered}
+
+Participants were asked the extent to which they believed *household recycling* and *Extinction Rebellion* were beneficial along a seven-point semantic differential (*1*=*Extremely harmful; 4=Neither; 7=Extremely beneficial*), such that higher scores reflect a greater belief that *household recycling* or *Extinction Rebellion* are beneficial and thus indicate more favourable attitudes. Generally, attitudes towards *household recycling* were overwhelmingly positive (*M*=`r round(mean(data_long$HRCont),2)`, *SD*=`r round(sd(data_long$HRCont),2)`), whilst those towards *Extinction Rebellion* were more mixed (*M*=`r round(mean(data_long$XRCont),2)`, *SD*=`r round(sd(data_long$XRCont),2)`).
+
+##### Certainty {.unnumbered}
+
+Attitude certainty was measured for both attitude objects using four items along a five-point response scale (*1="Not at all", 5="Extremely"*). Responses were combined such that higher scores indicate greater attitude certainty, and this combined scale showed excellent internal reliability (Cronbach's $\alpha$=`r round(aCertainty$total$raw_alpha, 2)`). Participants were asked how *certain, strong, important* and *relevant* their attitudes toward *household recycling* and *Extinction* *Rebellion* were. Attitude certainty was generally a little higher for *household recycling* (*M*=`r round(mean(data_long$HRStr),2)`, *SD*=`r round(sd(data_long$HRStr),2)`) than for *Extinction Rebellion* (*M*=`r round(mean(data_long$XRStr),2)`, *SD*=`r round(sd(data_long$XRStr),2)`) .
+
+##### Ambivalence {.unnumbered}
+
+To measure ambivalence, participants responded to seven items (e.g. "*I feel conflicted in my attitudes towards* [household recycling/ Extinction Rebellion]") along a seven-point Likert scale (*1="Strongly Disagree"* to *7="Strongly Agree"*); reverse-scored items such as "*I do not find myself feeling torn between positive and negative feelings toward* [household recycling/ Extinction Rebellion]" were also included. A further two items ("*how indecisive do you feel in your attitude?*" and "*how mixed do you feel in your attitude*?") along a seven-point semantic differential (*1="Feel no indecision at all"*; *7="Feel maximum indecision"*) were also included. All nine items were combined into a single scale, which showed good internal reliability (Cronbach's $\alpha$=`r round(aAmbivalence$total$raw_alpha, 2)`); higher scores indicate greater attitude ambivalence. On average, attitudes towards *household recycling* (*M*=`r round(mean(data_long$HRAmbiv),2)`, *SD*=`r round(sd(data_long$HRAmbiv),2)`) were less ambivalent than those towards *Extinction Rebellion* (*M*=`r round(mean(data_long$XRAmbiv),2)`, *SD*=`r round(sd(data_long$XRAmbiv),2)`).
+
+### Estimation Task {.unnumbered}
+
+During the estimation task, participants provided estimates of the frequency of 21 social issues taken from Ipsos MORI's Perils in Perception data-sets [@ipsosmori2016; @ipsosmori2017; @ipsosmori2018; @ipsosmori2020] [^m3]. For consistency, all questions began with the structure "out of 100 people in the UK, how many...?" (for example, "out of 100 people in the UK, how many do you think are Muslim?"). Following a similar practice question taken from the same data-sets ("Out of every 100 young adults aged 25-34 in the UK, how many do you think live with their parents?"), participants were asked to provide their best estimate as an integer from *0* to *100* on a slider (starting position of *0*; see Figure \@ref(fig:pngstim) for an example). Participants made these estimates twice, unaware that they would make second estimates at the time of the first estimates.
+
+[^m3]: The Perils in Perception 2021 data-set on misconceptions relating to climate change [@ipsosmori2021] was published following the finalisation of stimuli. As such, despite their clear relevance to the current study, these stimuli could not be included.
+
+```{r pngstim, fig.cap="Sample question with instructions and response slider from the estimation task."}
+knitr::include_graphics("writeup/images/stimuli.png")
+```
+
+#### Stimuli {.unnumbered}
+
+The Perils in Perception data-sets [@ipsosmori2016; @ipsosmori2017; @ipsosmori2018; @ipsosmori2020] contained information on the estimations of social phenomena from over 10,000 participants for over 50 questions across four years of data collection. Items were chosen according to several criteria. Firstly, questions spanned several themes between data-sets, which tended to be themed around particularly topics from causes of death [@ipsosmori2020] to sexual morality [@ipsosmori2018]. A selection of items from across each of these data-sets were included to cover a wide range of social issues.
+
+Secondly, we also wanted to include measures that are both generally *over-* and *under-*estimated by people, with varying magnitudes of over- or under-estimation. As such, responses from the original data-sets were compared with included statistics for the "true" value at the time of data collection and compared with participant responses to calculate the raw mean error. This was such that 0 indicates no error (i.e. perfect accuracy from participants), with scores below 0 indicating under-estimation and scores above 0 indicating over-estimation. For the items selected, the raw mean error was -5.61 (*SD*=10.48; ranging from -20 to +45), indicating a small but minor bias towards underestimation, whilst the mean absolute (ignoring direction) error was 11.56 (*SD*=5.02; ranging from 4 to 45).
+
+Furthermore, we wanted to avoid the overall characteristics of responses being significantly different between items that are generally *over*- or *under*-estimated. There was a strong negative correlation between the magnitude of absolute error and skewness (*r*=.-78), such that stimuli which participants made more error in estimating had much less skewed responses. This is expected, as if participants tend to severely over- or under-estimate an item, responses are likely to clump at either the extreme high or low end of the scale. However, to avoid biasing responses to items which participants generally under-estimate compared to ones they generally over-estimate, care was taken to ensure the correlation between *raw* error and skewness was as close to zero as possible. A strong correlation between raw error and skewness would indicate that either over- or under-estimated items tend to have more skewed responses than the other. Combinations of different items from a variety of topics were tested against these criteria to ensure appropriate values, with the final selection of stimuli having a correlation between raw error and skewness of *r*=-.07.
+
+The final stimuli, along with updated current statistics (deemed as the "correct" answers for the purposes of this study) sourced from current databases and their reference number within this data-set, are detailed in Table \@ref(tab:TableQ); additional information about error values and skewness from the respective Perils in Perception data-sets [@ipsosmori2016; @ipsosmori2017; @ipsosmori2018; @ipsosmori2020] can be found in Appendix \@ref(pipstim). As participants could only enter integers as responses, the correct answers were rounded from the original data-source to the nearest integer to prevent the granularity of answers differing from that of participant responses biasing results between questions. Items were presented to participants in a random order.
+
+```{r TableQ, echo=FALSE, warnings=FALSE}
+TableQ <- data.frame(TableStim)
+knitr::kable(TableQ, 
+             booktabs=TRUE,
+             escape=FALSE,
+             linesep = "",
+             align="rlr", 
+             caption="Estimation Question Stimuli", 
+             col.names=c("No.", "Question (Out of every 100 people...)", "Answer")) %>% 
+  kable_styling(latex_options = c("scale_down", "HOLD_position")) %>%
+  footnote(general_title= "Note.", 
+           general ="Several participants in the Prolific sample reported seeing question 5 twice instead of question 6 during the first round of estimates. As this is likely the result of a coding error in the study, we must assume that this was true for other participants; as a result, these items are dropped from all future analysis.",
+           threeparttable=TRUE,
+           footnote_as_chunk=TRUE)
+```
+
+#### Conditions {.unnumbered}
+
+Participants were randomly allocated between one of two conditions; the *dialectical bootstrapping* condition (*N*=`r length(which(data$Condition=="Dialectical Bootstrapping"))`); and the *repeated estimates* condition (*N*=`r length(which(data$Condition=="Repeated Estimates"))`). Conditions did not differ for the first round of estimates or on any of the other measures outside of the estimation task; the only difference between conditions concerned the instructions given in the *second* round of estimates. For both conditions, second estimates were averaged with the first to form *dialectical estimates* for those in the *dialectical bootstrapping* condition and *repeated estimates* for those in the *repeated estimates* condition.
+
+##### Dialectical Bootstrapping Condition {.unnumbered}
+
+In the *dialectical bootstrapping* condition, when making their second estimates participants were displayed their initial estimates and asked to think about the following:
+
+1.  Firstly assume that your first estimate is off the mark.
+2.  Second, think about a few reasons why that could be. Which assumptions and considerations that you initially made could have been wrong?
+3.  Third, what do these new considerations imply? Was the first estimate rather too high or too low?
+4.  Fourth, based on this new perspective, make a second, alternative estimate. Remember that the more accurate your estimates are, the higher the chance that you will win an Amazon voucher.
+
+In order to get participants to think deeply about the dialectical bootstrapping process, the same practice question was included alongside instructions and text boxes to allow participants to document and reflect on some of their thoughts at each stage of the process. Participants were asked to write short sentences about 1) which assumptions and considerations they initially made that could have been wrong, 2) what their new considerations imply, and 3) whether their first estimate was "rather too high or too low". This change to the procedure from similar studies [e.g. @herzog2009] was made to focus on dialectical bootstrapping as a method for increasing open-mindedness, for which a deeper level of engagement with the process may be necessary than that used in studies exploring dialectical bootstrapping effects directly. Other than these differences in instructions, the presentation of stimuli was identical.
+
+##### Repeated Estimates (Control) Condition {.unnumbered}
+
+The *repeated estimates* condition was identical to the initial round of estimates, as participants were *not* shown their initial estimates [in line with @herzog2009] and were asked to imagine that they had just started the study and were making their estimates for the first time. This served as a control to the *dialectical bootstrapping* condition to isolate any effects of the dialectical bootstrapping process from those of merely being provided with the opportunity to provide a second estimate.
+
+#### Dependent Variables {.unnumbered}
+
+##### Accuracy Gain {.unnumbered}
+
+To investigate whether dialectical bootstrapping results in greater gains in estimate accuracy compared with single estimates and the averaging of two repeated estimates, and to see whether the improved accuracy results from previous studies [e.g. @herzog2009, @litvinova2020] can be replicated with the social phenomena stimuli, accuracy gain was computed as described by @herzog2009[^m4]. The full calculations used to compute *accuracy gain* from the raw data can be summarised as follows:
+
+[^m4]: With the exception that accuracy gain scores were averaged within participants using the *mean* in this study instead of the *median* as in @herzog2009, as the mean is more easily interpreted and allows for differences in questions that participants generally responded either very accurately or inaccurately to influence accuracy gain scores. For the sake of comparison, all analysis were also run using median calculations and did not differ in terms of statistical significance.
+
+1.  Calculate the *first estimate error* for each question in the estimation task for each participant as the absolute difference between the estimation made by the participant and the true value taken from Table \@ref(tab:TableQ);
+2.  Repeat step 1 with second estimates to calculate the *second estimate error*;
+3.  Subtract the second estimate error from the first estimate error for each question per participant to calculate the *accuracy gain* for that question;
+4.  Average (mean) the accuracy gain across questions for each participant to calculate that participant's individual *accuracy gain*.
+
+As such, a positive accuracy gain score for a participant indicates that, on average across all questions, the average of both estimates had less error (i.e. was more accurate) than the first estimate alone; conversely, a negative accuracy gain score indicates that this combined estimate had more error than the single first estimate.
+
+##### Estimate Change {.unnumbered}
+
+In order to investigate whether participants differed between conditions in the extent to which they changed their second estimates in relation to their first, *estimate change* was calculated as the absolute difference between first and second estimates. Similarly to *accuracy gain*, this was calculated for all questions and then averaged (mean) within participants.
+
+### Personality Variables {.unnumbered}
+
+To learn more about the dialectical bootstrapping process (both in terms of *accuracy gain* and any benefits to open-mindedness as measured by *estimate change*), two personality variables of interest related to different types of open-mindedness were included.
+
+##### Open Minded Cognition (OMC) {.unnumbered}
+
+OMC was measured using the six-item OMC scale [@price2015]. Participants responded to statements such as "I am open to considering other viewpoints", as well as reverse scored items (e.g. "I have no patience for arguments I disagree with"), along a seven-point Likert scale (*1="Strongly Disagree"* to *7=Strongly Agree*). Items were combined such that a higher score indicates more open-minded cognition; participants generally scored somewhat above the midpoint of 3.5 (*M*=`r round(mean(data$OMC),2)`; *SD*=`r round(mean(data$OMC), 2)`). This scale showed acceptable internal reliability (Cronbach's $\alpha$=`r round(aOMC$total$raw_alpha, 2)`).
+
+##### Need for Closure Scale (NFCS) {.unnumbered}
+
+The 15-item short form NFCS [@roets2011; @webster1994] was used to measure *Need for Closure*, with the exception that a seven-point Likert scale (*1="Strongly Disagree"* to *7="Strongly Agree"*) was used for responses for consistency with OMC; items included "*I do not like situations that are uncertain"*. Items in the scale were combined into a single NFCS score, and this combined score showed good internal reliability (Cronbach's $\alpha$=`r round(aNFCS$total$raw_alpha, 2)`). Participants score slightly above the midpoint of 3.5 on the scale (*M*=`r round(mean(data$NFCS),2)`; *SD*=`r round(mean(data$NFCS), 2)`), which is a little higher than other studies which have used this measure [e.g. *M*=3.76, @roets2011; *M*=3.39, @swami2014] .
+
+## Procedure {.unnumbered}
+
+The study was conducted online using @qualtrics2021. After viewing the information sheet and providing consent, participants completed the first round of attitude measures to provide baseline measures of their attitudes towards *household recycling* and *Extinction Rebellion*, as well as the level of ambivalence and strength of these attitudes.
+
+Following this, participants completed the first round of the estimation task, with the instruction to give their best estimate in each case. There was then the opportunity for a short break, where participants were reminded that their performance in this task increased their chances of winning a gift voucher, before participants completed the second round of estimates. This was identical to the first round, with the exception that participants in the *dialectical bootstrapping* condition were presented with their initial estimates and followed the dialectical instructions (detailed in the *Materials* subsection), whilst participants in the *repeated estimates* condition were asked to imagine that they were completing the task for the first time.
+
+This was followed by the personality measures of OMC and NFCS, before participants were again asked about their attitudes (content, ambivalence and strength) towards *household recycling* and *Extinction Rebellion* to track changes. Finally, participants completed demographic measures of age, gender (text entry), nationality and education level, as well as completing a manipulation check asking them to recall whether they had made second estimates and the instructions they had been given whilst doing so. Participants were then asked what they thought the purpose of the study was, and were given an opportunity to provide comments before being presented with a debrief detailing the true aims of the study along with the contact details of the researcher.
+
+No significant ethical issues were anticipated, as data collected was not of a sensitive personal nature and was anonymised at the point of collection, and ethical approval was granted by the University of Bath Psychological Research Ethics Committee (PREC). Overall, the study took participants on average `r round(mean(data_raw$Duration),2)` minutes (*SD*=`r round(sd(data_raw$Duration),2)`) to complete.

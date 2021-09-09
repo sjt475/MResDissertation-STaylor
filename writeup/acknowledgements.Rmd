@@ -1,0 +1,17 @@
+```{=tex}
+\null
+\vspace{\fill}
+\begin{center}
+```
+# Acknowledgements {.unlisted .unnumbered}
+
+Firstly, thank you to the ESRC for providing the funding for my MRes and future PhD and allowing me to pursue my dreams. Additional thanks to the Hampton Lucy Educational Trust for their continued support during my undergraduate course and this year.
+
+Thank you to my supervisor for this dissertation, Dr Gosia Gocłowska, for her patience and guidance throughout this project; your words of wisdom will guide me throughout the years to come, and to Dr Janina Hoffmann for her contributions to this project. Additional thanks to Prof Greg Maio for continuing to mentor me and encouraging me to push myself, and to Dr Paul Bain for his academic and pastoral support throughout this academic year. Thanks must also be given to Dr Lukas Litzellachner for his seemingly endless fountain of R and regression knowledge.
+
+For Jacob, for providing unwavering support throughout the summer write-up period and the last three years; to my parents for always encouraging me to follow my passion for learning; and to my fellow coursemates Paridhhi, Hannah, Poppy and Lucy for always keeping the journey enjoyable.
+
+```{=tex}
+\end{center}
+\vspace{\fill}
+```

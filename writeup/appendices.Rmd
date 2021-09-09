@@ -1,0 +1,252 @@
+---
+editor_options: 
+  markdown: 
+    wrap: 72
+bibliography: references.bib
+---
+
+# (APPENDIX) Appendices {.unnumbered}
+
+# Copy of Pre-Registration Report {#prereg}
+
+*Note: this is a direct copy of the Open Science Foundation (OSF) pre-registration report for this study, which is not yet publicly available at the time of submitting this dissertation. As such, it uses some US spellings, and the formatting may be unusual to preserve the original format from the OSF website.*
+
+## Study Information {.unnumbered .unlisted}
+
+### Hypotheses {.unnumbered .unlisted}
+
+We expect that the dialectical bootstrapping procedure should improve judgment accuracy (small to medium effect size). The accuracy gain for a participant is defined, following @herzog2009, as the mean decrease in error of the average of the two estimates relative to the first estimate, across items.
+
+The second aim of the study is to maximize the effectiveness of the dialectical bootstrapping procedure. To this goal, we will conduct an item-based analysis for accuracy gain and determine how much the accuracy gain varies across items (item difficulty) and between participants on each item (heterogeneity). Further, we will analyze inter-item correlations for accuracy gain to determine if dialectical bootstrapping consistently improves performance.
+
+## Design Plan {.unnumbered .unlisted}
+
+### Study type {.unnumbered .unlisted}
+
+Experiment - A researcher randomly assigns treatments to study subjects, this includes field or lab experiments. This is also known as an intervention experiment and includes randomized controlled trials.
+
+### Blinding {.unnumbered .unlisted}
+
+Personnel who interact directly with the study subjects (either human or non-human subjects) will not be aware of the assigned treatments (commonly known as "double blind"). 
+
+### Study design {.unnumbered .unlisted}
+
+On each trial of the dialectical bootstrapping paradigm participants make 2 estimates of a testable fact (e.g., How many people in the UK are obese or overweight?). The researchers manipulate instructions regarding the second estimate (between subject manipulation). For instance, some participants may only be asked to produce a "second estimate" while others may be asked to produce a "dialectical estimate" -- an estimate that draws on opposite assumptions to the ones that guided the first estimate.
+
+### Randomization {.unnumbered .unlisted}
+
+Between-subject randomisation: Participants will be randomly assigned to the dialectical or second estimate condition.
+
+Item randomisation: Order of items within the first and second estimation block will be randomised.
+
+## Sampling Plan {.unnumbered .unlisted}
+
+### Existing Data {.unnumbered .unlisted}
+
+Registration prior to creation of data.
+
+### Explanation of existing data {.unnumbered .unlisted}
+
+No data is yet available for this first preregistered study at the point of registration.
+
+### Data collection procedures {.unnumbered .unlisted}
+
+We will exclude responses from participants (1) younger than 18, (2) non-UK residents, (3) those who do not consent to the use of their data as well as (4) those who fail an attention test or (5) take an extremely long or short time to complete the study. (6) We will also not analyse data from partial respondents as quitting the browser was specified, for research participants, as a way of withdrawing from the study.
+
+Data will be collected via the (1) Department of Psychology Research Pool (2) Social media and the internet (e.g., Twitter, Facebook, Reddit etc.). Participants from the Psychology Research Pool will be rewarded with course credit. Furthermore all participants will have the chance to win an Amazon voucher. If we are unsuccessful in collecting sufficient number of responses using the above methods we will consider collecting data via (3) Prolific Academic and paying research participants for the completion of the study.
+
+We aim to collect 200 valid responses from participants. This means that we will monitor the exclusion criteria and will stop the data collection only after 200 of the collected responses qualify as suitable for inclusion.
+
+We aim for the study to last, on average, no longer than 30 minutes.
+
+### Sample size {.unnumbered .unlisted}
+
+We aim to collect 200 valid participant responses. This should allow us to achieve Power = .80 assuming a 2-tailed test, p \<.05 and a medium effect size.
+
+### Sample size rationale {.unnumbered .unlisted}
+
+Previous studies on dialectical bootstrapping found an accuracy gain difference between the second estimates and the dialectical condition of d = .24 - .66 @herzog2014. A conservative assessment of a medium effect size d = .40 would thus require us to collect valid 100 responses per condition in a two-tailed test (Power = .80, p \< .05).
+
+### Stopping rule {.unnumbered .unlisted}
+
+N/A.
+
+## Variables {.unnumbered .unlisted}
+
+### Manipulated variables {.unnumbered .unlisted}
+
+We will use similar wording to that by Herzog and colleagues (2014). In the repeated estimate condition participants will be asked to produce a repeated estimate, as if they were making the estimation for one more time. In the dialectical estimate condition participants will be asked to make a second estimate using assumptions that are opposite to what they have thought of initially.
+
+### Measured variables {.unnumbered .unlisted}
+
+The key outcome measures are participants' responses to estimation tasks
+in T1 and T2. The questions will be the same in both testing times and a
+full list of those questions, together with the correct answers, can be
+found below.
+
+Estimation items used ("Out of 100 people in the UK."...):
+
+1. how many do you think do not affiliate themselves with any religion?
+(actual:45)
+
+2. how many do you think are immigrants to this country (i.e. not born in
+this country?) (actual:13)
+
+3. how many do you think said they personally believe that homosexuality
+is morally unacceptable? (actual:16)
+
+4. how many do you think are Muslim? (actual:5.2)
+
+5. how many do you think said they personally believe that having an
+abortion is morally unacceptable? (actual:25)
+
+6. how many do you think die as a result of suicide? (actual:1)
+
+7. how many do you think die as a result of terrorism or
+conflict? (actual:0.05)
+
+8. how many do you think die as a result of cancer? (actual:29.6)
+
+9. how many do you think said their own health was very good or
+good? (actual:74)
+
+10. how many do you think said they personally believe that sex between
+unmarried adults is morally unacceptable? (actual:11)
+
+11. how many do you think are aged 14 or younger? (actual:17)
+
+12. how many do you think die use disorders such as drug or alcohol
+addiction? (actual:0.4)
+
+13. how many do you think die as a result of interpersonal violence such
+as homicide or murder? (actual:0.1)
+
+14.how many do you think own a smartphone? (actual:90.5)
+
+15. how many do you think say they believe in hell? (actual:21)
+
+16. how many do you think say they believe in God? (actual:39)
+
+17. about how many working age people do you think are unemployed and
+looking for work? (actual:4)
+
+18. how many do you think have a Facebook account (who are old enough to
+have one, i.e. 13 and over)? (actual:76)
+
+19. how many do you think have access to the internet at home either
+through a computer or mobile device?(actual:96)
+
+20. how many said that, taking all things together, they are very happy
+or rather happy? (actual:91.23)
+
+21. how many do you think are either overweight or obese (excluding
+children)? (actual:63)
+
+Note: Number in bracket reflects actual number (per 100 people in the
+UK) and is used by the research team (but not shown to participants).
+
+### Indices {.unnumbered .unlisted}
+
+The accuracy gain for a participant is defined, following Herzog et al.,
+(2009), as the mean decrease in error of the average of the two
+estimates relative to the first estimate, across items. We will compute
+this in the following steps (formatted for SPSS, but may be calculated using R for final analysis):
+
+1)  Computing the mean absolute value of the difference between the
+    actual number and participant's estimate.
+
+"T1E1" below denotes participant's answer to estimate 1 at time 1
+"TrueNumber" denotes the solution to the estimation problem
+
+COMPUTE ErT1E1=ABS(TrueNumber-T1E1). VARIABLE LABELS ErT1E1 'Absolute
+error at time 1 for estimate 1'. EXECUTE.
+
+COMPUTE MerT1=MEAN(ErT1E1, ErT1E2, ErT1E3, .... ). VARIABLE LABELS MerT1
+'Mean error in time 1'. EXECUTE.
+
+2)  Computing the mean error across Time 1 and Time 2.
+
+COMPUTE MerTot=MEAN(MerT1, MerT2). VARIABLE LABELS MerTot 'Mean error
+across time 1 and time 2'. EXECUTE.
+
+3)  Computing the accuracy gain, defined as the mean decrease in error
+    of the average of the two estimates relative to the first estimate,
+    across items.
+
+COMPUTE AccGain=MerT1-MerTot. VARIABLE LABELS AccGain 'Accuracy gain
+defined as mean decrease in error of the average of the two estimates
+relative to the first estimate, across items'. EXECUTE.
+
+## Analysis Plan {.unnumbered .unlisted}
+
+### Statistical models {.unnumbered .unlisted}
+
+We will test whether the extent of accuracy gain differs between the two
+conditions. Accuracy gain is defined as the mean decrease in error of
+the average of the two estimates relative to the first estimate, across
+items.
+
+### Transformations {.unnumbered .unlisted}
+
+N/A.
+
+### Inference criteria {.unnumbered .unlisted}
+
+We will use p-values to infer about the significant difference between
+the dialectical and second estimate condition.
+
+### Data exclusion {.unnumbered .unlisted}
+
+Participants younger than 18, non-UK residents and those who do not
+consent to the use of their data based on their answer will not be
+allowed to proceed with the study so, If our procedure is correctly
+executed, their data will not be collected at all.
+
+In one of the individual difference measures in the study we will embed
+one test question (e.g., This is a test question. To show that you are
+paying attention please click "Completely Disagree").
+
+We might also exclude extremely long or short completion times.
+
+### Missing data {.unnumbered .unlisted}
+
+We will only analyse data from participants who completed the whole
+questionnaire. This is because, for participants, closing the browser
+was defined as a way of withdrawing from the study.
+
+### Exploratory analysis {.unnumbered .unlisted}
+
+N/A.
+
+\newpage
+
+# Correlation Matrix {#matrix}
+
+```{r CorrPlot, echo=FALSE, message=FALSE, warning=FALSE, out.width="100%", fig.cap="Correlation matrix of attitudes and open-mindedness variables. T refers to time (T1 = before Estimation Task; T2 = after Estimation Task), HR to Household Recycling and XR to Extinction Rebellion.", fig.align="center"}
+knitr::include_graphics("writeup/images/CorrPlot.png")
+```
+
+\newpage
+
+# Perils in Perception Stimuli Data {#pipstim}
+
+The questions used in the estimation task of this study with the error
+values (directional such that positive indicates overestimation and
+negative indicates underestimation) and skewness of the distribution of
+estimates found in the respective Perils in Perception datasets (Ipsos
+MORI, 2016-2020).
+
+```{r TablePerils, echo=FALSE, warnings=FALSE}
+knitr::kable(TablePerils, 
+             booktabs=TRUE,
+             escape=FALSE,
+             linesep = "",
+             align="rlrr", 
+             caption="Perils in Perception Data for Stimuli", 
+             col.names=c("No.", "Question (Out of every 100 people...)", "Error (Directional)", "Skewness")) %>% 
+    kable_styling(latex_options = c("scale_down", "HOLD_position")) %>%
+  footnote(general_title= "", 
+           general ="The mean error was 10.48, indicating a slight bias towards items that participants overestimate, with a mean absolute error of 5.02. The correlation between error and skewness was -.07, indicating no bias between those items participants tend to over- and under-estimate and skewness, with a correlation between absolute error and skewness of -.78, suggesting that items which have lower error tend to be more skewed.",
+           threeparttable=TRUE,
+           footnote_as_chunk=TRUE)
+```

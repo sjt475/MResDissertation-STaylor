@@ -1,0 +1,342 @@
+---
+bibliography: references.bib
+---
+
+# Results {.unnumbered}
+
+## Preliminary Analysis {.unnumbered}
+
+R version 4.1.1 [@rcoreteam2021] was used to conduct analyses, and this report was produced using RMarkdown [@allaire2021] to enable replication[^r1]. In terms of manipulation check, only `r length(which(data_DB$Manipulation.Check==2))` participants in the *dialectical bootstrapping* condition and `r length(which(data_RE$Manipulation.Check==1))` participants in the *repeated estimates* condition failed to correctly identify the instructions they had been given when asked whether they had made second estimates as if their first estimates and the assumptions behind them had been wrong or if they had just started the study and were making estimates for the first time.
+
+[^r1]: All code used to perform these analyses and conduct this write-up, along with the Qualtrics [-@qualtrics2021] questionnaire and raw data-files, can be accessed at <https://github.com/sjt475/MResDissertation-STaylor>.
+
+In order to calculate the *estimate error*, the absolute differences between the estimates made by participants and the actual answers (from Table \@ref(tab:TableQ)) were calculated for every question for each participant for both first and second estimates; the mean of this score across all questions was then computed for both first and second estimates for each participant. First estimates were inaccurate by an average of `r round(mean(data$MedFE_Error),2)`% (*SD*=`r round(sd(data$MedFE_Error),2)`%) across both conditions. In the second round of estimates, *repeated estimates* deviated from the true value on average by `r round(mean(data_RE$MedFE_Error),2)`% (*SD*=`r round(sd(data_RE$MedFE_Error),2)`%), whilst *dialectical estimates* were inaccurate by `r round(mean(data_DB$MedFE_Error),2)`% (*SD*=`r round(sd(data_DB$MedFE_Error),2)`%). Box-plots for first estimates and second estimates (split by condition), alongside the true values taken from Table \@ref(tab:TableQ), are shown in Figure \@ref(fig:plotests), demonstrating that item selection was successful in resulting in a mixture of items that participants generally both under-and over-estimated, as well as some where they were reasonably accurate.
+
+Following this, *accuracy gain* and *estimate change* were calculated for each question as outlined in detail in the Methods section, and the mean of each was calculated for each participant [in line with @herzog2009]. The *attitude ambivalence* and *strength* items (for both *household recycling* and Extinction *Rebellion*)*,* along with the *OMC* and *NFCS* scales were combined into one score per scale for each participant by taking the score on all items within each scale and averaging them (mean). For thoroughness, Pearson's correlations between these variables are also reported in Appendix \@ref(matrix).
+
+```{r plotests, echo=FALSE, warning=FALSE, fig.cap="Boxplots showing median first (FE), along with second dialectical (SE: DB; dialectical bootstrapping condition) and repeated (SE: RE; repeated estimates condition) estimates along with the interquartile range for each question (indicated by question number and short description) in order to visually compare participants' estimates with true values (represented by black dots).", fig.asp=1.14, out.width="100%"}
+#First Esimtates
+qIDFE <- paste("FE", qID[], sep="")
+data_FE <- data[qIDFE]
+TableStimA <- TableStim[-c(5, 6), ]
+TableQ <- data.frame(ListStim, TableStimA$A)
+colnames(TableQ) <- c("Question", "Actual")
+colnames(data_FE) <- ListStim
+data_FE$Measure <- "FE"
+graph_FE <- gather(data_FE, Question, FE) # convert into long format data
+
+#DB Second Estimates
+qIDSE <- paste("SE", qID[], sep="")
+data_DB_SE <- data_DB[qIDSE]
+colnames(data_DB_SE) <- ListStim
+data_DB_SE$Measure <- "SE: DB"
+graph_DB_SE <- gather(data_DB_SE, Question, SE) # convert into long format data
+
+#RE Second Estimates
+qIDSE <- paste("SE", qID[], sep="")
+data_RE_SE <- data_RE[qIDSE]
+colnames(data_RE_SE) <- ListStim
+data_RE_SE$Measure <- "SE: RE"
+
+data_ests <- rbind(data_FE, data_DB_SE, data_RE_SE)
+
+data_graph_ests <- gather(data_ests, Question, Est, "Religion (1)":"Overweight (21)")
+
+ggplot(arrange(data_graph_ests, Measure), aes(Question, Est)) + #create plot
+  geom_boxplot(aes(color=Measure), width=0.85, alpha=0, position=position_dodge2(width = 5))+
+  geom_point(data=TableQ, aes(Question, Actual))+
+  ylab("Distribution of Estimates")+
+  scale_x_discrete("Question", limits=c(ListStim))+
+  scale_color_manual(breaks=data_graph_ests$Measure, values=c("FE"="#7CAE00", "SE: DB"="#F8766D", "SE: RE"="#00BFC4"))+
+  theme(panel.background=element_blank(), 
+        axis.line=element_line(colour="black"), 
+        legend.position="top", 
+        legend.title=element_blank())+ #hide grid and background
+  coord_flip() #set limits without losing data
+```
+
+## Primary Analysis {.unnumbered}
+
+### 1. Accuracy Gain {.unnumbered}
+
+In order to see whether dialectical estimates improve the accuracy of estimations of the social phenomena within the paradigm, *accuracy gain* was computed for both conditions and compared between them as outlined in the Methods section.
+
+In general, participants did not see a large *accuracy gain* when comparing the average (mean) of their first and second estimates (*M*=`r round(mean(data$MeanAG),2)`, *SD*=`r round(sd(data$MeanAG),2)`; see Figure \@ref(fig:plotAG)a). As shown in Figure \@ref(fig:plotAG)b, mean *accuracy gain* was negigibly higher in the *dialectical bootstrapping* condition (*M*=`r round(mean(data_DB$MeanAG),2)`, *SD*=`r round(sd(data_DB$MeanAG),2)`) than in the *repeated estimates* condition (*M*=`r round(mean(data_RE$MeanAG),2)`, *SD*=`r round(sd(data_RE$MeanAG),2)`). As Levene's test for homogeneity of variance was significant (`r RQ1_levene_apa$statistic`), equality of variances could not be assumed [@levene1961]; therefore, Welch's *t*-test was used, which is more robust to violations of homogeneity of variance [@welch1947]. A two-tailed between-subjects Welch's *t*-test found no significant difference between conditions (`r RQ1_t_apa$full_result`).
+
+```{r plotAG, fig.cap="a. Distribution of mean accuracy gain across all questions for each participant, coloured by condition. Positive values indicate averaging first and second estimates improved accuracy compared to the first estimate alone; negative values indicate averaged estimates are less accurate than first estimates. Note that participants in the dialectical bootstrapping condition generally had more extreme positive or negative accuracy gains. b. Mean accuracy gain by condition. Error bars show 95% confidence intervals (CIs) of the mean."}
+#Improvement Plots
+datagain <- data.frame(data$ResponseId, data$MedAG, data$Condition) #grab necessary data
+colnames(datagain) <- c("ID", "AccuracyGain", "Condition") #rename columns
+datagain$ID <- factor(datagain$ID, levels = datagain$ID[order(datagain$Condition, -datagain$AccuracyGain)]) #order by condition and accuracy gain (descending)
+plot1 <- ggplot(datagain, aes(x=ID, y=AccuracyGain, stat="identity")) + #create plot
+    geom_hline(yintercept=0)+ #add line at 0
+  geom_hline(yintercept=7.5, colour="grey")+ 
+  geom_hline(yintercept=5, colour="grey")+
+  geom_hline(yintercept=2.5, colour="grey")+
+  geom_hline(yintercept=-2.5, colour="grey")+
+  geom_hline(yintercept=-5, colour="grey")+
+  geom_hline(yintercept=-7.5, colour="grey")+
+  geom_bar(stat="identity", aes(fill=Condition)) + #add bars, filling by condition
+  theme(axis.ticks.x=element_blank(), axis.text.x=element_blank(), #hide tickmarks for ID
+        panel.background=element_blank(), axis.line.y=element_line(colour="black"),
+        axis.line.x=element_line(colour="grey"), legend.position="bottom",
+        legend.direct="vertical",
+        aspect.ratio=3/5)+ #hide grid and add axis line for y
+  xlab("Participant")+ #x label +
+  ylab("Mean Accuracy Gain (%)")+ #y label 
+  ggtitle("a. Accuracy Gain Distribution")+
+  scale_y_continuous(breaks = seq(-7.5, 7.5, by=2.5))+
+  coord_cartesian(ylim=c(-7.5, 7.5), expand=FALSE) #set limits without losing data
+
+plot2 <- ggplot(data, aes(Condition, MedAG, fill=Condition))+
+  stat_summary(geom="bar", fun=mean)+
+  stat_summary(geom="errorbar", fun.data=mean_ci, width=.5)+
+  theme(panel.background=element_blank(), 
+        legend.position="", 
+        legend.title=element_blank(), #hide grid and background
+        axis.line=element_line(), 
+        axis.ticks.x=element_blank(), 
+        axis.text.x=element_blank(),
+        aspect.ratio=1/1)+ 
+  xlab("Condition")+ #x label
+  ylab("Accuracy Gain (%)")+ #y label
+  ggtitle("b. Accuracy Gain by Condition")+
+  geom_hline(yintercept=0)+ #line at 0
+  scale_y_continuous(breaks=seq(-1, 1, 0.1))+
+  coord_cartesian(ylim=c(-1, 1)) #set limits without losing data
+
+grid.arrange(plot1, plot2, ncol=2)
+```
+
+### 2. Estimate Change {.unnumbered}
+
+Although dialectical bootstrapping estimates did not improve accuracy in estimating social phenomena (both in comparison to averaging repeated estimates and single estimates), participants in the dialectical bootstrapping condition may have been more open-minded to changing their second estimates from their initial ones. To test this, *estimate change* was computed against the initial estimates as outlined in the Methods section and compared between conditions.
+
+Indeed, most participants made a reasonably large *estimate change* between their first and second estimates (*M*=`r round(mean(data$MeanE_Change),2)`, *SD*=`r round(sd(data$MeanE_Change),2)`; see Figure \@ref(fig:plotEChange)a). As shown in Figure \@ref(fig:plotEChange)b, mean *estimate change* was much larger in the *Dialectical Bootstrapping* condition (*M*=`r round(mean(data_DB$MeanE_Change),2)`, *SD*=`r round(sd(data_DB$MeanE_Change),2)`) than in the *Repeated Estimates* condition (*M*=`r round(mean(data_RE$MeanE_Change),2)`, *SD*=`r round(sd(data_RE$MeanE_Change),2)`); this difference was significant under a two-tailed between-subjects Welch's *t*-test (`r RQ2_t_apa$full_result`). A Welch's *t*-test was used because Levene's test for homogeneity of variance was also significant (`r RQ2_levene_apa$statistic`), indicating that equality of variances could not be assumed..
+
+```{r plotEChange, echo=FALSE, message=FALSE, warning=FALSE, fig.cap="a. Mean absolute estimate change (averaged across all questions) from first to second estimate for each participant, coloured by condition. b. Mean absolute difference in estimations between first and second estimates by condition. Error bars show 95% CIs."}
+#Improvement Plots
+datagain <- data.frame(data$ResponseId, data$MedE_Change, data$Condition) #grab necessary data
+colnames(datagain) <- c("ID", "E_Change", "Condition") #rename columns
+datagain$ID <- factor(datagain$ID, levels = datagain$ID[order(datagain$Condition, -datagain$E_Change)]) #order by condition and accuracy gain (descending)
+
+plot1 <- ggplot(datagain, aes(x=ID, y=E_Change, stat="identity")) + #create plot
+    geom_hline(yintercept=0)+ #add line at 0
+  geom_bar(stat="identity", aes(fill=Condition)) + #add bars, filling by condition
+  theme(axis.ticks.x=element_blank(), 
+        axis.text.x=element_blank(), #hide tickmarks for ID
+        panel.background=element_blank(), 
+        axis.line.y=element_line(colour="black"),
+        axis.line.x=element_line(colour="grey"), 
+        legend.position="bottom",
+        legend.direct="vertical",
+        aspect.ratio=3/5)+ #hide grid and add axis line for y
+  xlab("Participant")+ #x label +
+  ylab("Mean Estimate Change (%)")+ #y label 
+  ggtitle("a. Estimate Change Distribution")+
+  scale_y_continuous(breaks = seq(0, 35, by=5))+
+  coord_cartesian(ylim=c(0, 35), expand=FALSE) #set limits without losing data
+
+plot2 <- ggplot(data, aes(Condition, MedE_Change, fill=Condition))+
+  stat_summary(geom="bar", fun=mean)+
+  stat_summary(geom="errorbar", fun.data=mean_ci, width=.5)+
+  theme(panel.background=element_blank(), 
+        axis.ticks.x=element_blank(),
+        axis.text.x=element_blank(),
+        legend.position="", 
+        legend.title=element_blank(), #hide grid and background
+        axis.line=element_line(), aspect.ratio=1/1)+ 
+  xlab("Condition")+ #x label
+  ylab("Estimate Change (%)")+ #y label
+  ggtitle("b. Estimate Change by Condition")+
+  geom_hline(yintercept=0)+ #line at 0
+  scale_y_continuous(breaks=seq(0, 10, 1), expand = expansion(mult = c(0, 0)))+
+  coord_cartesian(ylim=c(0, 10)) #set limits without losing data
+
+grid.arrange(plot1, plot2, ncol=2)
+```
+
+### 3. Attitude Content, Ambivalence and Strength {.unnumbered}
+
+To test whether *dialectical bootstrapping* makes people more open-minded to changing their attitudes by either directly changing their attitude content, making their attitudes more ambivalent, or reducing the strength of these attitudes, a mixed two-way ANOVA with condition (*dialectical bootstrapping* or *repeated estimates*) and time (*time 1* or *time 2*) as factors was conducted for each of these dependent variables (attitude content, ambivalence and strength) for both attitude topics (*household recycling* and *Extinction Rebellion*)[^r2]. Analysis was kept separate for these variables instead of combining them into a single measure of pro-environmental attitudes, as they were chosen to represent distinct types of attitude and only weakly correlated in terms of content (*r*=`r round(cor_cont$estimate,2)`, *p*<0.001[^r3]), did not correlate at all for ambivalence (*r*=`r round(cor_ambiv$estimate,2)`, *p*=`r round(cor_ambiv$p.value,2)`), and only moderately for attitude strength (*r*=`r round(cor_str$estimate,2)`, *p*<0.001; see Appendix \@ref(matrix) for full correlations broken down by topic and time).
+
+[^r2]: All ANOVA for the attitudes measures follow this format.
+
+[^r3]: Correlations for content, ambivalence and time average (mean) across time 1 and time 2 for each topic.
+
+For testing our hypotheses, the condition by time interaction was of most interest; a significant interaction would suggest that attitudes changed differently between participants who made dialectical as opposed to repeated estimates. However, it is possible that the mere process of making second estimates (regardless of whether they are dialectical or repeated) causes individuals to rethink their attitudes, which would be captured by a main effect of time. Main effects of condition are difficult to interpret, as any difference in attitude at time 1 is assumed to be spurious; the conditions did not differ until after the first round of attitude measures, and the sample was randomly assigned to conditions.
+
+#### Household Recycling {.unnumbered}
+
+##### Content {.unnumbered}
+
+Attitudes towards *household recycling* were overwhelmingly positive at time 1 (*M*=`r round(mean(data$HRContT1),2)`, *SD*=`r round(sd(data$HRContT1),2)`), with little difference at time 2 (*M*=`r round(mean(data$HRContT2),2)`, *SD*=`r round(sd(data$HRContT2),2)`); no responses below 3 (indicating a slightly negative attitude) were recorded. As expected, differences between the *dialectical bootstrapping* condition (*M*=`r round(mean(data_long_DB$HRCont),2)`, *SD*=`r round(sd(data_long_DB$HRCont), 2)`) and the *repeated estimates (M*=`r round(mean(data_long_RE$HRCont),2)`, *SD*=`r round(sd(data_long_RE$HRCont), 2)`) were small. ANOVA found no significant difference in attitudes towards *household recycling* between times (`r anovaHRCont_apa$full_result$Time`) or conditions (`r anovaHRCont_apa$full_result$Condition`), with no significant interaction (`r anovaHRCont_apa$full_result$Condition_Time`; marginal means for the interaction shown in Figure \@ref(fig:plotatt)a1[^rrdi]).
+
+[^rrdi]: RDI (*Raw* data shown by data points; *Descriptive* statistics such as means shown by bars; and *Inferential* statistics such as CIs and smoothed distributions shown by boxes and filled beans) plots are included to allow a greater depth of information to be conveyed in the same graph as a bar chart.
+
+##### Strength {.unnumbered}
+
+Participants had strong attitudes towards *household recycling* at both time 1 (*M*=`r round(mean(data$HRStrT1),2)`, `r round(sd(data$HRStrT1),2)`) and time 2 (*M*=`r round(mean(data$HRStrT2),2)`, *SD*=`r round(sd(data$HRStrT2),2)`) with no significant difference between times (`r anovaHRStr_apa$full_result$Time`). Curiously, there was a small but statistically significant difference in attitude strength towards HR between conditions (`r anovaHRStr_apa$full_result$Condition`), such that these attitudes were stronger in the *repeated estimates* (*M*=`r round(mean(data_long_RE$HRStr),2)`, *SD*=`r round(sd(data_long_RE$HRStr), 2)`) condition than in the *dialectical bootstrapping* condition (*M*=`r round(mean(data_long_DB$HRStr),2)`, *SD*=`r round(sd(data_long_DB$HRStr), 2)`)[^r4]. However, the interaction between time and condition was not significant (`r anovaHRStr_apa$full_result$Condition_Time`; marginal means detailed in Figure \@ref(fig:plotatt)b1).
+
+[^r4]: As discussed earlier, without any significant interaction with time, it is difficult to infer anything from main effects of condition, as these examine differences between condition at both time 1 and time 2 combined; time 1 differences are spurious due to random sampling and there being no differences between conditions at time of measurement. As such, this main effect of condition is considered uninterpretable and is not further discussed in the discussion section.
+
+##### Ambivalence {.unnumbered}
+
+Generally, attitudes towards *houshold recycling* were not very ambivalent at either time 1 (*M*=`r round(mean(data$HRAmbivT1),2)`, *SD*=`r round(sd(data$HRAmbivT1),2)`) or time 2 (*M*=`r round(mean(data$HRAmbivT2),2)`, *SD*=`r round(sd(data$HRAmbivT2),2)`). There was little difference between the *dialectical bootstrapping* (*M*=`r round(mean(data_long_DB$HRAmbiv),2)`, *SD*=`r round(sd(data_long_DB$HRAmbiv), 2)`) and *repeated estimates (M*=`r round(mean(data_long_RE$HRAmbiv),2)`, *SD*=`r round(sd(data_long_RE$HRAmbiv), 2)`) conditions. ANOVA did not find a significant difference in the level of attitude ambivalence towards HR in terms of time (`r anovaHRAmbiv_apa$full_result$Time`) or condition (`r anovaHRAmbiv_apa$full_result$Condition`). However, there was a significant interaction between time and condition (`r anovaHRAmbiv_apa$full_result$Condition_Time`). Despite this significant interaction, under a Bonferroni correction (*p* significant at \<.0125), post hoc tests find no difference between time of measurement in the *dialectical bootstrapping* (`r anovaHRAmbivDB_apa$full_result$Time`) nor *repeated estimates* condition (`r anovaHRAmbivRE_apa$full_result$Time`), and no differences between conditions at time 1 (`r anovaHRAmbivT1_apa$full_result$Condition`) nor time 2 (`r anovaHRAmbivT2_apa$full_result$Condition`). Marginal means for this interaction are detailed in Figure \@ref(fig:plotatt)c1.
+
+#### Extinction Rebellion {.unnumbered}
+
+##### Content {.unnumbered}
+
+Attitudes towards *Extinction Rebellion* at time 1 were only slightly above the neutral point of 4 (*M*=`r round(mean(data$XRContT1),2)`), with a much larger variance in scores spanning the full response range (*SD*=`r round(sd(data$XRCont),2)`); responses at time 2 (*M*=`r round(mean(data$XRContT2),2)`, *SD*=`r round(mean(data$XRContT2),2)`) were not significantly different (`r anovaXRCont_apa$full_result$Time`). Predictably, there were not significant differences between the *dialectical bootstrapping* (*M*=`r round(mean(data_long_DB$XRCont),2)`, *SD*=`r round(sd(data_long_DB$XRCont), 2)`) and *repeated estimates* (*M*=`r round(mean(data_long_RE$XRCont),2)`, *SD*=`r round(sd(data_long_RE$XRCont), 2)`) conditions (`r anovaXRCont_apa$full_result$Condition`). The interaction between time and condition was significant (`r anovaXRCont_apa$full_result$Condition_Time`). Post hoc tests (significance at *p*\<.0125 using Bonferroni correction) showed that attitudes in the *repeated estimates* condition became less positive at time 2 than at time 1 (`r anovaXRContRE_apa$full_result$Time`); the same was not true for the *dialectical bootstrapping* condition (`r anovaXRContDB_apa$full_result$Time`), and no differences between conditions at either time 1 (`r anovaXRContT1_apa$full_result$Condition`) or time 2 (`r anovaXRContT2_apa$full_result$Condition`) were found. Figure \@ref(fig:plotatt)a2 shows the marginal means for this interaction.
+
+##### Strength {.unnumbered}
+
+Attitudes towards *Extinction Rebellion* were not particularly strong at time 1 (*M*=`r round(mean(data$XRStrT1),2)`, *SD*=`r round(sd(data$XRStrT1),2)`) or time 2 (*M*=`r round(mean(data$XRStrT2),2)`, *SD*=`r round(sd(data$XRStrT2),2)`); differences between the *dialectical bootstrapping* (*M*=`r round(mean(data_long_DB$XRStr),2)`, *SD*=`r round(sd(data_long_DB$XRStr), 2)`) and *repeated estimates* (*M*=`r round(mean(data_long_RE$XRStr),2)`, *SD*=`r round(sd(data_long_RE$XRStr), 2)`) conditions were minimal. Neither the difference in times (`r anovaXRStr_apa$full_result$Time`) nor conditions (`r anovaXRStr_apa$full_result$Condition`) were significant; furthermore, there was no significant interaction between time and condition (`r anovaHRStr_apa$full_result$Condition_Time`; marginal means plotted in Figure \@ref(fig:plotatt)b2).
+
+##### Ambivalence {.unnumbered}
+
+Participants were varied in their ambivalence towards *Extinction Rebellion* at time 1 (*M*=`r round(mean(data$XRAmbivT1),2)`, *SD*=`r round(sd(data$XRAmbivT1),2)`), with minimal differences at time 2 (*M*=`r round(mean(data$XRAmbivT2),2)`, *SD*=`r round(sd(data$XRAmbivT2),2)`). As expected, differences between conditions were minimal (*dialectical bootstrapping M*=`r round(mean(data_long_DB$XRAmbiv),2)`, *SD*=`r round(sd(data_long_DB$XRAmbiv), 2)`*; repeated estimates M*=`r round(mean(data_long_RE$XRAmbiv),2)`, *SD*=`r round(sd(data_long_RE$XRAmbiv), 2)`). Differences between times (`r anovaXRAmbiv_apa$full_result$Time`) and conditions (`r anovaXRAmbiv_apa$full_result$Condition`) were not statistically significant. However, there was a significant interaction between time and condition (`r anovaHRAmbiv_apa$full_result$Condition_Time`; see Figure \@ref(fig:plotatt)c2). However, using a Bonferroni correction to correct for four comparisons (therefore *p* significant at \<.0125), post hoc tests found no difference between time of measurement in the *dialectical bootstrapping* (`r anovaXRAmbivDB_apa$full_result$Time`) nor *repeated estimates* condition (`r anovaXRAmbivRE_apa$full_result$Time`), and no differences between conditions at time 1 (`r anovaXRAmbivT1_apa$full_result$Condition`) nor time 2 (`r anovaXRAmbivT2_apa$full_result$Condition`). Marginal means for this interaction are detailed in Figure \@ref(fig:plotatt)c2.
+
+```{r plotatt, echo=FALSE, message=FALSE, warning=FALSE, fig.cap="a) RDI plots of attitude content by condition at both measurement times for both topics (household recycling and Extinction Rebellion), where 1 represents a completely negative attitude and 7 represents a completely positive attitude. b) RDI plots of attitude strength by condition at both measurement times for both topics, where 1 represents a very weak attitude and 5 represents a very strong attitude. c) RDI plots of attitude ambivalence by condition at both measurement times for both topics, where 1 represents a completely univalent attitude and 7 represents a completely ambivalent attitude.  ", fig.width= 6, fig.height=8}
+par(mfrow = c(3, 2))
+par(mar = c(4, 2.5, 3, 0.1))
+pirateplot(formula= HRCont ~ Time*Condition,
+           data=data_long,
+           ylim=c(1,7),
+           cex.lab=.4,
+           cex.names=.4,
+           inf.method="ci",
+           inf.within=ResponseId,
+           main="a1. Household Recyling (Content)",
+           pal="ipod")
+par(mar = c(4, 2.5, 3, 0.1))
+pirateplot(formula= XRCont ~ Time*Condition,
+           data=data_long,
+           ylim=c(1,7),
+           cex.lab=.4,
+           cex.names=.4,
+           inf.method="ci",
+           inf.within=ResponseId,
+           main="a2. Extinction Rebellion (Content)",
+           pal="ipod")
+par(mar = c(4, 2.5, 3, .1))
+pirateplot(formula= HRStr ~ Time*Condition,
+           data=data_long,
+           ylim=c(1,5),
+           cex.lab=.4,
+           cex.names=.4,
+           inf.method="ci",
+           inf.within=ResponseId,
+           main="b1. Household Recyling (Strength)",
+           pal="ipod")
+par(mar = c(4, 2.5, 3, .1))
+pirateplot(formula= XRStr ~ Time*Condition,
+           data=data_long,
+           ylim=c(1,5),
+           cex.lab=.4,
+           cex.names=.4,
+           inf.method="ci",
+           inf.within=ResponseId,
+           main="b2. Extinction Rebellion (Strength)",
+           pal="ipod")
+par(mar = c(4, 2.5, 3, 0.1))
+pirateplot(formula= HRAmbiv ~ Time*Condition,
+           data=data_long,
+           ylim=c(1,7),
+           cex.lab=.4,
+           cex.names=.4,
+           inf.method="ci",
+           inf.within=ResponseId,
+           main="c1. Household Recyling (Ambivalence)",
+           pal="ipod")
+par(mar = c(4, 2.5, 3, 0.1))
+pirateplot(formula= XRAmbiv ~ Time*Condition,
+           data=data_long,
+           ylim=c(1,7),
+           cex.lab=.4,
+           cex.names=.4,
+           inf.method="ci",
+           inf.within=ResponseId,
+           main="c2. Extinction Rebellion (Ambivalence)",
+           pal="ipod")
+```
+
+### 4. Open-Minded Cognition (OMC) and Need for Closure (NFCS) {.unnumbered}
+
+Finally, to see whether the dialectical bootstrapping process is related to typical measures of open-mindedness, linear models were conducted on both median *accuracy gain* and *estimate change* per participant. Condition was included as a categorical predictor (with *dialectical bootstrapping* as the reference condition), with OMC and NFCS as continuous predictors, alongside all three two-way interaction terms (condition by OMC; condition by NFCS; and OMC by NFCS), as well as the three-way interaction between condition, OMC and NFCS. Levels of OMC were similar between the *dialectical bootstrapping* (*M*=`r round(mean(data_DB$OMC),2)`; *SD*=`r round(sd(data_DB$OMC),2)`) and *repeated estimates* (*M*=`r round(mean(data_RE$OMC),2)`; *SD*=`r round(sd(data_RE$OMC),2)`) conditions, as were levels of NFCS (*dialectical bootstrapping M*=`r round(mean(data_DB$NFCS),2)`, *SD*=`r round(sd(data_DB$NFCS),2)`; *repeated estimates M*=`r round(mean(data_RE$NFCS),2)`, *SD*=`r round(sd(data_RE$NFCS),2)`).
+
+#### Accuracy Gain {.unnumbered}
+
+For *accuracy gain*, the model overall was not significant (`r RQ4.1_apa$full_result$modelfit`); however, for this study key interest lay in the individual predictive terms. Despite this, none of the predictor terms including interaction terms were significant (*p*s\>.05; see Table \@ref(tab:tableRQ4AG) for all predictor terms and Figure \@ref(fig:plotlmAG) for scatter plots of OMC and NFCS by accuracy gain and condition).
+
+```{r tableRQ4AG}
+apa_table(RQ4.1_apa$table,
+          caption="Multivariate linear regression model for accuracy gain with condition as a categorical predictor (with dialectical bootstrapping as the reference condition), and OMC and NFCS as continious predictors, including all possible two- and three-way interaction terms. OMC and NFCS were scaled via mean centering for the purpose of the regression.",
+          placement="h",
+          font_size="footnotesize")
+```
+
+```{r plotlmAG, echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Scatterplots with regression lines with 95% CIs showing the lack of significant relationship (*p*>.05) between accuracy gain with OMC (a.) and NFCS (b.) respectively by condition (dialectical bootstrapping red; repeated estimates blue).", fig.height=3}
+plot1 <- ggplot(data, aes(x=OMC, y=MedAG, color=Condition))+
+  geom_point()+
+  geom_smooth(method="lm", aes(fill=Condition))+
+  theme(legend.position="", panel.background=element_blank(),
+        axis.line=element_line(colour="black"))+
+  xlab("a. OMC")+
+  ylab("Accuracy Gain")+
+  geom_hline(yintercept=0)+ #add line at 0
+  scale_x_continuous(breaks=seq(1 ,7, 1), expand = expansion(mult = c(0, 0)))+
+  scale_y_continuous(breaks=seq(-7.5,7.5,2.5), expand=expansion(mult=c(0,0)))+
+  coord_cartesian(ylim=c(-7.5, 7.5), xlim=c(1,7))
+plot2 <- ggplot(data, aes(x=NFCS, y=MedAG, color=Condition))+
+  geom_point()+
+  geom_smooth(method="lm", aes(fill=Condition))+
+  theme(legend.position="", panel.background=element_blank(),
+        axis.line=element_line(colour="black"))+
+  xlab("b. NFCS")+
+  ylab("Accuracy Gain")+
+  geom_hline(yintercept=0)+ #add line at 0
+  scale_x_continuous(breaks=seq(1,7, 1), expand = expansion(mult = c(0, 0)))+
+  scale_y_continuous(breaks=seq(-7.5,7.5,2.5), expand=expansion(mult=c(0,0)))+
+  coord_cartesian(ylim=c(-7.5, 7.5), xlim=c(1,7))
+
+grid.arrange(plot1, plot2, ncol=2)
+```
+
+#### Estimate Change {.unnumbered}
+
+In contrast, the multivariate linear regression model with the same predictors for estimate change was significant overall (`r RQ4.2_apa$full_result$modelfit`). The only significant predictor overall was condition (`r RQ4.2_apa$full_result$ConditionRepeated_Estimates`), such that estimates were `r round(abs(RQ4.2$coefficients[2]),2)`% more different in the *dialectical bootstrapping condition* (as reflected in the earlier *t*-test; this simple difference is plotted in Figure \@ref(fig:plotEChange) in the earlier dedicated section on *estimate change*), with no main effects or interactions involving OMC or NFCS (see Table \@ref(tab:tableRQ4EC) for all terms of the regression model). The model is plotted in Figure \@ref(fig:plotlmEC).
+
+```{r tableRQ4EC}
+apa_table(RQ4.2_apa$table,
+          caption="Multivariate linear regression model for estimate change with condition as a categorical predictor (with dialectical bootstrapping as the reference condition), and OMC and NFCS as continious predictors, including all possible two- and three-way interaction terms. OMC and NFCS were scaled via mean centering for the purpose of the regression.",
+          placement="h",
+          font_size="footnotesize")
+```
+
+```{r plotlmEC, echo=FALSE, fig.cap="Scatterplots with regression lines with 95% CIs showing the lack of significant relationship (p>.05) between estimate change with OMC (a.) and NFCS (b.) respectively by condition (dialectical bootstrapping red; repeated estimates blue). Note, however, the significant difference between conditions reflected by the two condition lines remaining parallel.", fig.height=3, message=FALSE, warning=FALSE}
+plot1 <- ggplot(data, aes(x=OMC, y=MedE_Change, color=Condition))+
+  geom_point()+
+  geom_smooth(method="lm", aes(fill=Condition))+
+  theme(legend.position="", panel.background=element_blank(),
+        axis.line=element_line(colour="black"))+
+  xlab("a. OMC")+
+  ylab("Estimate Change")+  
+  scale_x_continuous(breaks=seq(1,7, 1), expand = expansion(mult = c(0, 0)))+
+  scale_y_continuous(breaks=seq(0,25,5), expand=expansion(mult=c(0,0)))+
+  coord_cartesian(ylim=c(0, 25), xlim=c(1,7))
+
+plot2 <- ggplot(data, aes(x=NFCS, y=MedE_Change, color=Condition))+
+  geom_point()+
+  geom_smooth(method="lm", aes(fill=Condition))+
+  theme(legend.position="", panel.background=element_blank(),
+        axis.line=element_line(colour="black"))+
+  xlab("b. NFCS")+
+  ylab("Estimate Change")+
+  scale_x_continuous(breaks=seq(1,7, 1), expand = expansion(mult = c(0, 0)))+
+  scale_y_continuous(breaks=seq(0,25,5), expand=expansion(mult=c(0,0)))+
+  coord_cartesian(ylim=c(0, 25), xlim=c(1,7))
+
+grid.arrange(plot1, plot2, ncol=2)
+```

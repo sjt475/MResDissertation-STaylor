@@ -1,0 +1,17 @@
+---
+bibliography: references.bib
+---
+
+```{=tex}
+\null
+\vspace{\fill}
+\begin{center}
+```
+# Abstract {.unlisted .unnumbered}
+
+Attempts to combat climate change have been hampered by polarisation, dogmatism and inaccurate assumptions about the facts [e.g. @gifford2011]. This study attempts to apply dialectical bootstrapping, a cognitive technique that has been found to improve the accuracy of estimations, as an intervention to reduce dogmatism and increase open-mindedness. In dialectical bootstrapping, individuals are asked to make an initial estimation about a fact, then asked to make another estimation after considering that the assumptions behind the first were wrong (a *dialectical* estimate). Previous studies [e.g. @herzog2014] have demonstrated that averaging ("bootstrapping") estimates in several domains (such as the dates of historical events) results in greater accuracy than single estimations or averaging with a second non-dialectical estimate. Using `r nrow(data)` participants, the present study aimed to replicate these dialectical bootstrapping effects with social phenomena and investigate its relatedness to open-mindedness and pro-environmental attitudes. Participants given dialectical instructions were more open-minded to changing their second estimation compared to their first than those merely instructed to provide a repeat estimate. However, this did not result in successful replication of gains in accuracy, and there were no spillover effects to pro-environmental attitude change or flexibility in attitudes, nor any relationships with individual differences in open-mindedness. Reasons for this failure to replicate are discussed, along with practical implications for dialectical bootstrapping as a tool to reduce dogmatism and areas for future studies.
+
+```{=tex}
+\end{center}
+\vspace{\fill}
+```
