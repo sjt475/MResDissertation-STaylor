@@ -1,0 +1,5 @@
+This folder contains the rcode used to analysis the data.
+
+files:
+MRes-Dissertation-R-Analysis.R <- contains the initial setup, data-screening, item combination preliminary analysis
+MRes-Dissertation-All-Analysis.R <- contains the primary analysis including t-tests, ANOVA and regressions
